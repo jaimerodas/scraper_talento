@@ -1,0 +1,35 @@
+module CandidateProcessor
+  CANDIDATE_MATCHER = /\(No\.\sCV:\s\d+\)$/
+
+  private
+
+  def get_candidate_info
+    name = @browser.find(
+      '#datosPersonales .rowDataHeader:nth-child(2)'
+    ).text.gsub(CANDIDATE_MATCHER, '')
+
+    email = @browser.all('#OCD_contactInfo .rowData a').first.text
+
+    phones = @browser.all(
+      '#OCD_contactInfo .contentRightFieldPersonal'
+    ).map {|e| e.text.strip }&.select {|e| e =~ /^[\d\s\(\)\+]+$/ }&.join(
+      ', '
+    )
+
+    @candidates << [name, email, phones]
+  end
+
+  def explore_candidate(candidate_url)
+    cv = candidate_url.match(/(\d+)$/)[0]
+    @browser.visit candidate_url
+
+    begin
+      name = @browser.find('#datosPersonales .rowDataHeader:nth-child(2)').text
+      get_candidate_info if name =~ CANDIDATE_MATCHER
+    rescue Capybara::ElementNotFound => error
+      @browser = Capybara::Session.new(:poltergeist)
+      login
+      explore_candidate(candidate_url)
+    end
+  end
+end
