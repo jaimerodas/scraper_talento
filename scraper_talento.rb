@@ -29,7 +29,10 @@ class ScraperTalento
   CANDIDATE_MATCHER = /\(No\.\sCV:\s\d+\)$/
 
   def initialize
-    config_capybara
+    Capybara.register_driver :poltergeist do |app|
+      Capybara::Poltergeist::Driver.new(app, js_errors: false)
+    end
+
     @browser = Capybara::Session.new(:poltergeist)
     @candidate_urls = []
     @candidates = []
@@ -48,12 +51,6 @@ class ScraperTalento
   end
 
   private
-
-  def config_capybara
-    Capybara.register_driver :poltergeist do |app|
-      Capybara::Poltergeist::Driver.new(app, js_errors: false)
-    end
-  end
 
   def login
     capture_stdout do
