@@ -45,12 +45,16 @@ module CandidateProcessor
     @browser.find(NAME_SELECTOR).text.match?(CV_REGEX)
   end
 
+  def prop(selector)
+    @browser.all(selector)&.first&.text
+  end
+
   def name
     @browser.find(NAME_SELECTOR).text.sub(CV_REGEX, '').strip
   end
 
   def email
-    @browser.all('#OCD_contactInfo .rowData a').first.text
+    prop '#OCD_contactInfo .rowData a'
   end
 
   def phones
