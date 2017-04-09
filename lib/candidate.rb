@@ -2,7 +2,7 @@
 
 # This module holds all of the methods necessary to process candidates.
 module CandidateProcessor
-  CANDIDATE_MATCHER = /\s\(No\.\sCV:\s\d+\)$/
+  CV_REGEX = /\s\(No\.\sCV:\s\d+\)$/
   NAME_SELECTOR = '#datosPersonales .rowDataHeader:nth-child(2)'
 
   private
@@ -42,11 +42,11 @@ module CandidateProcessor
   end
 
   def old_candidate?
-    @browser.find(NAME_SELECTOR).text.match?(CANDIDATE_MATCHER)
+    @browser.find(NAME_SELECTOR).text.match?(CV_REGEX)
   end
 
   def name
-    @browser.find(NAME_SELECTOR).text.sub(CANDIDATE_MATCHER, '').strip
+    @browser.find(NAME_SELECTOR).text.sub(CV_REGEX, '').strip
   end
 
   def email

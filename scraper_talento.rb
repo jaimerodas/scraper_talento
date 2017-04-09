@@ -25,9 +25,6 @@ class ScraperTalento
   LOGIN_PAGE = "#{BASE_URL}/Autenticacion/LogOn"
   SEARCH_PAGE = "#{BASE_URL}/Candidatos/BuscarB"
 
-  # Other
-  CANDIDATE_MATCHER = /\(No\.\sCV:\s\d+\)$/
-
   def initialize
     Capybara.register_driver :poltergeist do |app|
       Capybara::Poltergeist::Driver.new(app, js_errors: false)
