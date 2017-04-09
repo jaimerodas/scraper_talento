@@ -2,7 +2,8 @@
 
 # This module holds all of the methods necessary to process candidates.
 module CandidateProcessor
-  CANDIDATE_MATCHER = /\(No\.\sCV:\s\d+\)$/
+  CANDIDATE_MATCHER = /\s\(No\.\sCV:\s\d+\)$/
+  NAME_SELECTOR = '#datosPersonales .rowDataHeader:nth-child(2)'
 
   private
 
@@ -26,8 +27,7 @@ module CandidateProcessor
   end
 
   def gather_candidate_data
-    name = @browser.find('#datosPersonales .rowDataHeader:nth-child(2)').text
-    if name.match?(CANDIDATE_MATCHER)
+    if old_candidate?
       @candidates << [name, email, phones]
       @old += 1
     else
@@ -41,10 +41,12 @@ module CandidateProcessor
     login
   end
 
+  def old_candidate?
+    @browser.find(NAME_SELECTOR).text.match?(CANDIDATE_MATCHER)
+  end
+
   def name
-    @browser.find(
-      '#datosPersonales .rowDataHeader:nth-child(2)'
-    ).text.gsub(CANDIDATE_MATCHER, '').strip
+    @browser.find(NAME_SELECTOR).text.sub(CANDIDATE_MATCHER, '').strip
   end
 
   def email
