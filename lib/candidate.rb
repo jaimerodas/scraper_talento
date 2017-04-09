@@ -54,11 +54,10 @@ module CandidateProcessor
   end
 
   def phones
-    selector = '#OCD_contactInfo .contentRightFieldPersonal'
-
-    @browser.all(selector)
+    @browser.all('#OCD_contactInfo .contentRightFieldPersonal')
             .map { |e| e.text.gsub(/[\s\(\)\+]/, '') }
             &.select { |e| e =~ /^\d+$/ }
+            &.uniq
             &.join(', ')
   end
 end
