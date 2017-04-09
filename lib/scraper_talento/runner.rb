@@ -6,14 +6,6 @@ module ScraperTalento
     include HelperFunctions
     include CandidateProcessor
 
-    # Search Parameters
-    SEARCH_STRING = 'Asesor Comercial'
-    SEARCH_FILTERS = %w(AGE-2 AGE-3 AL-5 AL-6 AL-7 SAL-1 SAL-2).freeze
-
-    # Login Data
-    OCC_USERNAME = ENV['OCC_USERNAME']
-    OCC_PASSWORD = ENV['OCC_PASSWORD']
-
     # Results
     RESULTS_COLUMNS = [
       'Nombre',
@@ -34,14 +26,10 @@ module ScraperTalento
       Capybara.register_driver :poltergeist do |app|
         Capybara::Poltergeist::Driver.new(app, js_errors: false)
       end
-
+      @config = YAML.load_file(File.dirname(__FILE__) + '/../../config.yml')
       @browser = Capybara::Session.new(:poltergeist)
-      @candidate_urls = []
-      @candidates = []
-      @old = 0
-      @new = 0
-      @confidential = 0
-      @resets = 0
+      @candidate_urls = @candidates = []
+      @old = @new = @confidential = @resets = 0
     end
 
     def run
@@ -58,8 +46,8 @@ module ScraperTalento
     def login
       capture_stdout do
         @browser.visit LOGIN_PAGE
-        @browser.fill_in 'username', with: OCC_USERNAME
-        @browser.fill_in 'password', with: OCC_PASSWORD
+        @browser.fill_in 'username', with: @config['login']['username']
+        @browser.fill_in 'password', with: @config['login']['password']
         @browser.find_button('btn_submit').click
       end
     end
@@ -68,8 +56,7 @@ module ScraperTalento
       puts 'Iniciando busqueda'
       capture_stdout do
         @browser.visit SEARCH_PAGE
-        @browser.fill_in 'SearchValue', with: SEARCH_STRING
-        @browser.select 'México-DF Y Zona Metro.', from: 'Location'
+        @browser.fill_in 'SearchValue', with: @config['search']['string']
         @browser.find_button('Talent search').click
 
         sleep 5
@@ -77,8 +64,7 @@ module ScraperTalento
     end
 
     def filter_results
-
-      SEARCH_FILTERS.each do |filter|
+      (['LOC-1'] + @config['search']['filters']).each do |filter|
         apply_filter(filter)
       end
 

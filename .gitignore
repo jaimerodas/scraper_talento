@@ -1,3 +1,5 @@
 vendor
 .bundle
 resultados.csv
+
+config.yml
