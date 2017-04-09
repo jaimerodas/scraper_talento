@@ -30,6 +30,9 @@ class ScraperTalento
     @browser = Capybara::Session.new(:poltergeist)
     @candidate_urls = []
     @candidates = []
+    @old = 0
+    @new = 0
+    @resets = 0
   end
 
   def run
@@ -99,6 +102,8 @@ class ScraperTalento
 
     bar = ProgressBar.new(@candidate_urls.size)
     @candidate_urls.each { |c| explore_candidate(c); bar.increment! }
+
+    puts "De los #{@candidate_urls.count} candidatos, #{@old} fueron viejos, #{@new} fueron nuevos, y OCC nos botó #{@resets} veces."
   end
 
   def save_info

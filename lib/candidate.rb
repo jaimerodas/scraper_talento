@@ -25,8 +25,14 @@ module CandidateProcessor
 
     begin
       name = @browser.find('#datosPersonales .rowDataHeader:nth-child(2)').text
-      get_candidate_info if name =~ CANDIDATE_MATCHER
+      if name =~ CANDIDATE_MATCHER
+        get_candidate_info
+        @old += 1
+      else
+        @new += 1
+      end
     rescue Capybara::ElementNotFound => error
+      @resets += 1
       @browser = Capybara::Session.new(:poltergeist)
       login
       explore_candidate(candidate_url)
