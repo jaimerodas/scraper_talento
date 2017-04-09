@@ -15,6 +15,8 @@ bundle install
 
 ## Ejecución
 
+Gracias a que ya tenemos un bonito ejecutable:
+
 ```bash
-bundle exec ruby scraper_talento.rb
+bin/scraper_talento
 ```
