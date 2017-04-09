@@ -6,7 +6,7 @@ module CandidateProcessor
   def get_candidate_info
     name = @browser.find(
       '#datosPersonales .rowDataHeader:nth-child(2)'
-    ).text.gsub(CANDIDATE_MATCHER, '')
+    ).text.gsub(CANDIDATE_MATCHER, '').strip
 
     email = @browser.all('#OCD_contactInfo .rowData a').first.text
 
