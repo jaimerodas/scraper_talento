@@ -6,5 +6,5 @@ require 'csv'
 require 'progress_bar'
 
 require_relative 'scraper_talento/functions'
-require_relative 'scraper_talento/candidate'
+require_relative 'scraper_talento/candidate_processor'
 require_relative 'scraper_talento/runner'
