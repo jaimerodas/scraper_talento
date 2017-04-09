@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# This module holds helper functions.
 module HelperFunctions
   # This method blocks anything executed within it from printing to STDOUT
   def capture_stdout
@@ -25,5 +28,12 @@ module HelperFunctions
   def print_number_of_candidates
     results = @browser.find('.ts_facets_numcand_desc .ts_facets_numcand').text
     puts "Hay #{results} resultados"
+  end
+
+  def print_search_results
+    msg = "De los #{@candidate_urls.count} candidatos, "
+    msg += "#{@old} fueron viejos, #{@new} fueron nuevos, "
+    msg += "y OCC nos botó #{@resets} veces."
+    puts msg
   end
 end

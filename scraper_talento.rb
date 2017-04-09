@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'capybara/poltergeist'
 require 'progress_bar'
 require 'csv'
@@ -5,24 +6,26 @@ require 'csv'
 require_relative 'lib/functions.rb'
 require_relative 'lib/candidate.rb'
 
+# The main class. It goes to OCC, logs in, searches for candidates, obtains info
+# from each of the results, and stores them in a CSV file.
 class ScraperTalento
   include HelperFunctions
   include CandidateProcessor
 
-  # Parámetros de búsqueda
-  SEARCH_STRING = 'Asesor Comercial'.freeze
+  # Search Parameters
+  SEARCH_STRING = 'Asesor Comercial'
   SEARCH_FILTERS = %w(AGE-2 AGE-3 AL-5 AL-6 AL-7 SAL-1 SAL-2).freeze
 
-  # Datos registro
   OCC_USERNAME = ENV['OCC_USERNAME']
   OCC_PASSWORD = ENV['OCC_PASSWORD']
+  # Login Data
 
-  # Direcciones de internet
-  BASE_URL = 'https://recluta11.occ.com.mx'.freeze
-  LOGIN_PAGE = "#{BASE_URL}/Autenticacion/LogOn".freeze
-  SEARCH_PAGE = "#{BASE_URL}/Candidatos/BuscarB".freeze
+  # URLs
+  BASE_URL = 'https://recluta11.occ.com.mx'
+  LOGIN_PAGE = "#{BASE_URL}/Autenticacion/LogOn"
+  SEARCH_PAGE = "#{BASE_URL}/Candidatos/BuscarB"
 
-  # Otros
+  # Other
   CANDIDATE_MATCHER = /\(No\.\sCV:\s\d+\)$/
 
   def initialize
@@ -52,7 +55,6 @@ class ScraperTalento
     end
   end
 
-  # Entra a la pag y hace login
   def login
     capture_stdout do
       @browser.visit LOGIN_PAGE
@@ -62,7 +64,6 @@ class ScraperTalento
     end
   end
 
-  # Inicia la busqueda
   def start_search
     puts 'Iniciando busqueda'
     capture_stdout do
@@ -76,7 +77,6 @@ class ScraperTalento
     end
   end
 
-  # Filtra los resultados
   def filter_results
     puts 'Filtrando Resultados'
     bar = ProgressBar.new(SEARCH_FILTERS.size)
@@ -90,20 +90,17 @@ class ScraperTalento
     sleep 10
   end
 
-  # Junta los urls de los candidatos
   def gather_candidates_info
-    capture_stdout do
-      @browser.all('table.resumes .ts_cv_id').each do |c|
-        @candidate_urls << c[:href].gsub(/\?.+$/, '')
-      end
-    end
+    gather_candidate_urls
 
     puts "Recolecté #{@candidate_urls.count} candidatos"
-
     bar = ProgressBar.new(@candidate_urls.size)
-    @candidate_urls.each { |c| explore_candidate(c); bar.increment! }
+    @candidate_urls.each do |c|
+      explore_candidate(c)
+      bar.increment!
+    end
 
-    puts "De los #{@candidate_urls.count} candidatos, #{@old} fueron viejos, #{@new} fueron nuevos, y OCC nos botó #{@resets} veces."
+    print_search_results
   end
 
   def save_info
