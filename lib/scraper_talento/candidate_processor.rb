@@ -64,6 +64,10 @@ module CandidateProcessor
     @browser.all(selector)&.first&.text
   end
 
+  def money(selector)
+    prop(selector).gsub(/[\s\$\,]/, '').to_f
+  end
+
   def name
     @browser.find(NAME_SELECTOR).text.sub(CV_REGEX, '').strip
   end
@@ -85,11 +89,11 @@ module CandidateProcessor
   end
 
   def minimum_salary
-    prop '#cv_empleosolicitado .contentSueldoTop'
+    money '#cv_empleosolicitado .contentSueldoTop'
   end
 
   def desired_salary
-    prop '#cv_empleosolicitado .contentSueldo'
+    money '#cv_empleosolicitado .contentSueldo'
   end
 
   def academic_level
