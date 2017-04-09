@@ -73,18 +73,13 @@ module ScraperTalento
         @browser.find_button('Talent search').click
 
         sleep 5
-        print_number_of_candidates
       end
     end
 
     def filter_results
-      puts 'Filtrando Resultados'
-      bar = ProgressBar.new(SEARCH_FILTERS.size)
-      bar.write
 
       SEARCH_FILTERS.each do |filter|
         apply_filter(filter)
-        bar.increment!
       end
 
       @browser.execute_script('ResultsByPage(1000)')

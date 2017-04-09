@@ -23,6 +23,9 @@ module HelperFunctions
     end
 
     sleep 10
+    puts '-----------------------'
+    puts "Filtrando por #{filter}"
+    print_number_of_candidates
   end
 
   def print_number_of_candidates
