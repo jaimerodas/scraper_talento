@@ -27,8 +27,11 @@ module CandidateProcessor
   end
 
   def gather_candidate_data
-    if new_candidate? then show_candidate_details
-    else @old += 1
+    if old_candidate? then @old += 1
+    elsif not_confidential? then show_candidate_details
+    else
+      @confidential += 1
+      return
     end
 
     @candidates << [
@@ -49,8 +52,12 @@ module CandidateProcessor
     @new += 1
   end
 
-  def new_candidate?
-    !@browser.find(NAME_SELECTOR).text.match?(CV_REGEX)
+  def old_candidate?
+    @browser.find(NAME_SELECTOR).text.match?(CV_REGEX)
+  end
+
+  def not_confidential?
+    !@browser.all('#datosPersonales .rowDataHeader:nth-child(2) a').empty?
   end
 
   def prop(selector)

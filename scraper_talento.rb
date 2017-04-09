@@ -46,6 +46,7 @@ class ScraperTalento
     @candidates = []
     @old = 0
     @new = 0
+    @confidential = 0
     @resets = 0
   end
 

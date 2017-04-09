@@ -31,9 +31,10 @@ module HelperFunctions
   end
 
   def print_search_results
-    msg = "De los #{@candidate_urls.count} candidatos, "
-    msg += "#{@old} fueron viejos, #{@new} fueron nuevos, "
-    msg += "y OCC nos botó #{@resets} veces."
-    puts msg
+    puts "De #{@candidate_urls} candidatos:"
+    puts "\t - #{@old} fueron viejos"
+    puts "\t - #{@new} fueron nuevos"
+    puts "\t - #{@confidential} fueron confidenciales"
+    puts "y OCC nos botó #{@resets} veces."
   end
 end
