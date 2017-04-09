@@ -27,12 +27,10 @@ module CandidateProcessor
   end
 
   def gather_candidate_data
-    if old_candidate?
-      @candidates << [name, email, phones]
-      @old += 1
-    else
-      @new += 1
+    if new_candidate? then show_candidate_details
+    else @old += 1
     end
+    @candidates << [name, email, phones]
   end
 
   def reset_session
@@ -41,8 +39,14 @@ module CandidateProcessor
     login
   end
 
-  def old_candidate?
-    @browser.find(NAME_SELECTOR).text.match?(CV_REGEX)
+  def show_candidate_details
+    @browser.find('#datosPersonales .rowDataHeader:nth-child(2) a').click
+    sleep 5
+    @new += 1
+  end
+
+  def new_candidate?
+    !@browser.find(NAME_SELECTOR).text.match?(CV_REGEX)
   end
 
   def prop(selector)
