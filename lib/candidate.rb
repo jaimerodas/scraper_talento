@@ -30,7 +30,11 @@ module CandidateProcessor
     if new_candidate? then show_candidate_details
     else @old += 1
     end
-    @candidates << [name, email, phones]
+
+    @candidates << [
+      name, email, phones, birthday,
+      minimum_salary, desired_salary, academic_level
+    ]
   end
 
   def reset_session
@@ -67,5 +71,21 @@ module CandidateProcessor
             &.select { |e| e =~ /^\d+$/ }
             &.uniq
             &.join(', ')
+  end
+
+  def birthday
+    prop '#datosPersonales .topContentLeftFieldPersonal'
+  end
+
+  def minimum_salary
+    prop '#cv_empleosolicitado .contentSueldoTop'
+  end
+
+  def desired_salary
+    prop '#cv_empleosolicitado .contentSueldo'
+  end
+
+  def academic_level
+    prop '#cv_preparacionacademica_group .cv_academica .contentTituloSeccion'
   end
 end

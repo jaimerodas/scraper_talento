@@ -20,6 +20,17 @@ class ScraperTalento
   OCC_PASSWORD = ENV['OCC_PASSWORD']
   # Login Data
 
+  # Results
+  RESULTS_COLUMNS = [
+    'Nombre',
+    'Email',
+    'Teléfonos',
+    'Fecha de Nacimiento',
+    'Sueldo Mínimo',
+    'Sueldo Deseado',
+    'Nivel Académico'
+  ].freeze
+
   # URLs
   BASE_URL = 'https://recluta11.occ.com.mx'
   LOGIN_PAGE = "#{BASE_URL}/Autenticacion/LogOn"
@@ -104,7 +115,7 @@ class ScraperTalento
     puts 'Guardamos información'
 
     CSV.open('resultados.csv', 'w') do |csv|
-      csv << %W(Nombre Email Tel\u00E9fonos)
+      csv << RESULTS_COLUMNS
       @candidates.each { |c| csv << c }
     end
   end
