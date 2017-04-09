@@ -20,7 +20,6 @@ module CandidateProcessor
   end
 
   def explore_candidate(candidate_url)
-    cv = candidate_url.match(/(\d+)$/)[0]
     @browser.visit candidate_url
 
     begin
@@ -31,7 +30,7 @@ module CandidateProcessor
       else
         @new += 1
       end
-    rescue Capybara::ElementNotFound => error
+    rescue Capybara::ElementNotFound
       @resets += 1
       @browser = Capybara::Session.new(:poltergeist)
       login
