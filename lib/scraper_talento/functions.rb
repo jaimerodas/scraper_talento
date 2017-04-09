@@ -31,7 +31,7 @@ module HelperFunctions
   end
 
   def print_search_results
-    puts "De #{@candidate_urls} candidatos:"
+    puts "De #{@candidate_urls.size} candidatos:"
     puts "\t - #{@old} fueron viejos"
     puts "\t - #{@new} fueron nuevos"
     puts "\t - #{@confidential} fueron confidenciales"
