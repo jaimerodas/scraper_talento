@@ -74,6 +74,7 @@ class ScraperTalento
   def filter_results
     puts 'Filtrando Resultados'
     bar = ProgressBar.new(SEARCH_FILTERS.size)
+    bar.write
 
     SEARCH_FILTERS.each do |filter|
       apply_filter(filter)
@@ -89,6 +90,8 @@ class ScraperTalento
 
     puts "Recolecté #{@candidate_urls.count} candidatos"
     bar = ProgressBar.new(@candidate_urls.size)
+    bar.write
+
     @candidate_urls.each do |c|
       explore_candidate(c)
       bar.increment!
