@@ -68,6 +68,7 @@ module ScraperTalento
         apply_filter(filter)
       end
 
+      puts 'Aumentando resultados a 1000 por hoja'
       @browser.execute_script('ResultsByPage(1000)')
       sleep 10
     end
