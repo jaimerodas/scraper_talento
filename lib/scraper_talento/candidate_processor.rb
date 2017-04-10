@@ -72,7 +72,7 @@ module CandidateProcessor
   end
 
   def money(selector)
-    prop(selector).gsub(/[\s\$\,]/, '').to_f
+    prop(selector).gsub(/[\s\$\,]/, '').to_i
   end
 
   def name
