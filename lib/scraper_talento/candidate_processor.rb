@@ -92,7 +92,8 @@ module CandidateProcessor
   end
 
   def birthday
-    prop '#datosPersonales .topContentLeftFieldPersonal'
+    prop('#datosPersonales .topContentLeftFieldPersonal')
+      .sub(%r[(\d{2})\/(\d{2})\/(\d{4})], '\3-\2-\1')
   end
 
   def minimum_salary
