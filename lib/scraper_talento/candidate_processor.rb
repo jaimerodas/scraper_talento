@@ -16,6 +16,8 @@ module CandidateProcessor
   end
 
   def explore_candidate(candidate_url)
+    return unless candidate_url.match?(URI.regexp)
+
     @browser.visit candidate_url
 
     begin
