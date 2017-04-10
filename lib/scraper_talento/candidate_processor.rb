@@ -35,11 +35,16 @@ module CandidateProcessor
       @confidential += 1
       return
     end
+    save_candidate_data
+  end
 
-    @candidates << [
-      name, email, phones, birthday,
-      minimum_salary, desired_salary, academic_level
-    ]
+  def save_candidate_data
+    CSV.open('resultados.csv', 'a') do |csv|
+      csv << [
+        name, email, phones, birthday,
+        minimum_salary, desired_salary, academic_level
+      ]
+    end
   end
 
   def reset_session

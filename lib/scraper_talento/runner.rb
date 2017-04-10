@@ -37,8 +37,8 @@ module ScraperTalento
       login
       start_search
       filter_results
+      init_file
       gather_candidates_info
-      save_info
     end
 
     private
@@ -87,12 +87,11 @@ module ScraperTalento
       print_search_results
     end
 
-    def save_info
-      puts 'Guardamos información'
+    def init_file
+      puts 'Empezamos archivo'
 
       CSV.open('resultados.csv', 'w') do |csv|
         csv << RESULTS_COLUMNS
-        @candidates.each { |c| csv << c }
       end
     end
   end
