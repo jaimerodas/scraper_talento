@@ -9,17 +9,6 @@ module ScraperTalento
     include ResumeGatherer
     include CandidateProcessor
 
-    # Results
-    RESULTS_COLUMNS = [
-      'Nombre',
-      'Email',
-      'Teléfonos',
-      'Fecha de Nacimiento',
-      'Sueldo Mínimo',
-      'Sueldo Deseado',
-      'Nivel Académico'
-    ].freeze
-
     # URLs
     BASE_URL = 'https://recluta11.occ.com.mx'
     LOGIN_PAGE = "#{BASE_URL}/Autenticacion/LogOn"
@@ -101,14 +90,14 @@ module ScraperTalento
     end
 
     def scrape_resumes
-      urls = File.open('urls.txt').map
+      urls = File.readlines('urls.txt')
       print_separator
       puts "Voy a sacar info de #{urls.count} CVs"
       bar = ProgressBar.new(urls.size)
       bar.write
 
       urls.each do |c|
-        explore_candidate(c)
+        explore_candidate(c.sub("\n", ''))
         bar.increment!
       end
 

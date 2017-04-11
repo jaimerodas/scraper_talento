@@ -3,4 +3,4 @@
 
 require_relative '../lib/scraper_talento'
 
-ScraperTalento::Runner.resume_download
+ScraperTalento::Runner.resume_resume_download
