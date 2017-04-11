@@ -4,6 +4,7 @@ module ScraperTalento
   # info from each of the results, and stores them in a CSV file.
   class Runner
     include HelperFunctions
+    include ResumeGatherer
     include CandidateProcessor
 
     # Results
@@ -74,7 +75,7 @@ module ScraperTalento
     end
 
     def gather_candidates_info
-      gather_candidate_urls
+      scrape_candidate_urls
 
       puts "Recolecté #{@candidate_urls.count} candidatos"
       bar = ProgressBar.new(@candidate_urls.size)

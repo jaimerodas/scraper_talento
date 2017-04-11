@@ -7,14 +7,6 @@ module CandidateProcessor
 
   private
 
-  def gather_candidate_urls
-    capture_stdout do
-      @browser.all('table.resumes .ts_cv_id').each do |c|
-        @candidate_urls << c[:href].gsub(/\?.+$/, '')
-      end
-    end
-  end
-
   def explore_candidate(candidate_url)
     return unless candidate_url.match?(URI.regexp)
 
