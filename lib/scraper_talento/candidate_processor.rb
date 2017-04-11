@@ -23,19 +23,29 @@ module CandidateProcessor
     begin
       gather_candidate_data
     rescue Capybara::ElementNotFound
+      enough_attempts_left?
       reset_session
       explore_candidate(candidate_url)
     end
   end
 
   def gather_candidate_data
-    if old_candidate? then @old += 1
-    elsif not_confidential? then show_candidate_details
+    if old_candidate?
+      @old += 1
+    elsif not_confidential?
+      show_candidate_details
     else
       @confidential += 1
       return
     end
+
     save_candidate_data
+    @tries = 0
+  end
+
+  def enough_attempts_left?
+    @tries += 1
+    raise 'Ya nos bloquearon la cuenta' if @tries > 5
   end
 
   def save_candidate_data

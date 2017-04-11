@@ -29,7 +29,7 @@ module ScraperTalento
       @config = YAML.load_file(File.dirname(__FILE__) + '/../../config.yml')
       @browser = Capybara::Session.new(:poltergeist)
       @candidate_urls = @candidates = []
-      @old = @new = @confidential = @resets = 0
+      @old = @new = @confidential = @resets = @tries = 0
     end
 
     def run
