@@ -37,7 +37,7 @@ module CandidateProcessor
 
   def enough_attempts_left?
     @tries += 1
-    raise 'Ya nos bloquearon la cuenta' if @tries > 5
+    raise 'Ya nos bloquearon la cuenta' if @tries > 2
   end
 
   def save_candidate_data
