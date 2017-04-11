@@ -5,6 +5,7 @@ module ScraperTalento
   # info from each of the results, and stores them in a CSV file.
   class Runner
     include HelperFunctions
+    include FileFunctions
     include ResumeGatherer
     include CandidateProcessor
 
@@ -56,7 +57,6 @@ module ScraperTalento
     end
 
     def run_resume_download
-      init_candidate_urls
       init_results_file
       login
       scrape_resumes
@@ -101,35 +101,18 @@ module ScraperTalento
     end
 
     def scrape_resumes
-      puts "Recolecté #{@candidate_urls.count} candidatos"
-      bar = ProgressBar.new(@candidate_urls.size)
+      urls = File.open('urls.txt').map
+      print_separator
+      puts "Voy a sacar info de #{urls.count} CVs"
+      bar = ProgressBar.new(urls.size)
       bar.write
 
-      @candidate_urls.each do |c|
+      urls.each do |c|
         explore_candidate(c)
         bar.increment!
       end
 
       print_search_results
-    end
-
-    def init_files
-      init_urls_file
-      init_results_file
-    end
-
-    def init_urls_file
-      puts 'Creamos archivo de URLs'
-      CSV.open('resultados.csv', 'w') { |csv| csv << RESULTS_COLUMNS }
-    end
-
-    def init_results_file
-      puts 'Creamos archivo de Resultados'
-      File.open('urls.txt', 'w') {}
-    end
-
-    def init_candidate_urls
-      @candidate_urls = File.open('urls.txt').map
     end
   end
 end
