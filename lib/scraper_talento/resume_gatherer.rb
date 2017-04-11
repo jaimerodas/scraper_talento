@@ -34,10 +34,10 @@ module ResumeGatherer
     end
   end
 
-  def scrape_urls
+  def iterate_over_paged_results
     scrape_page_urls
     @candidate_urls = @candidate_urls.uniq
     puts "Llevamos #{@candidate_urls.size} urls"
-    scrape_urls if less_than_limit? && next_page?
+    iterate_over_paged_results if less_than_limit? && next_page?
   end
 end

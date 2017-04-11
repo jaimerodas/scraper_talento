@@ -3,4 +3,4 @@
 
 require_relative '../lib/scraper_talento'
 
-ScraperTalento::Runner.new.run
+ScraperTalento::Runner.full_process

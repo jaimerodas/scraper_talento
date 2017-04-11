@@ -34,8 +34,13 @@ module ScraperTalento
       @old = @new = @confidential = @resets = @tries = 0
     end
 
-    def run
-      puts 'Hacemos Login'
+    def self.full_process
+      object = new
+      object.run_full_process
+      object
+    end
+
+    def run_full_process
       login
       start_search
       filter_results
@@ -47,6 +52,7 @@ module ScraperTalento
     private
 
     def login
+      puts 'Hacemos Login'
       capture_stdout do
         @browser.visit LOGIN_PAGE
         @browser.fill_in 'username', with: @config['login']['username']
@@ -76,9 +82,12 @@ module ScraperTalento
       sleep 10
     end
 
-    def scrape_resumes
+    def scrape_urls
+      iterate_over_paged_results
       save_urls_to_file
+    end
 
+    def scrape_resumes
       puts "Recolecté #{@candidate_urls.count} candidatos"
       bar = ProgressBar.new(@candidate_urls.size)
       bar.write
@@ -91,7 +100,20 @@ module ScraperTalento
       print_search_results
     end
 
-      puts 'Empezamos archivo'
+    def init_files
+      init_urls_file
+      init_results_file
+    end
+
+    def init_urls_file
+      puts 'Creamos archivo de URLs'
+      CSV.open('resultados.csv', 'w') { |csv| csv << RESULTS_COLUMNS }
+    end
+
+    def init_results_file
+      puts 'Creamos archivo de Resultados'
+      File.open('urls.txt', 'w') {}
+    end
 
     end
   end
