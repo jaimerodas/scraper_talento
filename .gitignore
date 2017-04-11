@@ -1,5 +1,10 @@
+# Cosas básicas
 vendor
 .bundle
-resultados.csv
 
+# Archivo de configuración
 config.yml
+
+# Resultados
+resultados.csv
+urls.txt

@@ -39,7 +39,7 @@ module ScraperTalento
       login
       start_search
       filter_results
-      init_file
+      init_files
       scrape_urls
       scrape_resumes
     end
@@ -77,6 +77,7 @@ module ScraperTalento
     end
 
     def scrape_resumes
+      save_urls_to_file
 
       puts "Recolecté #{@candidate_urls.count} candidatos"
       bar = ProgressBar.new(@candidate_urls.size)
@@ -90,12 +91,8 @@ module ScraperTalento
       print_search_results
     end
 
-    def init_file
       puts 'Empezamos archivo'
 
-      CSV.open('resultados.csv', 'w') do |csv|
-        csv << RESULTS_COLUMNS
-      end
     end
   end
 end
