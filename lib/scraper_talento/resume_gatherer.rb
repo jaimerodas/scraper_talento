@@ -1,3 +1,7 @@
+# frozen_string_literal: true
+
+# This module holds the necessary methods to iterate over the results page
+# and gather all of the candidate's urls.
 module ResumeGatherer
   def scrape_page_urls
     capture_stdout do
