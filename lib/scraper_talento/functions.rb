@@ -23,7 +23,7 @@ module HelperFunctions
     end
 
     sleep 10
-    puts '-----------------------'
+    print_separator
     puts "Filtrando por #{filter}"
     print_number_of_candidates
   end
@@ -39,5 +39,9 @@ module HelperFunctions
     puts "\t - #{@new} fueron nuevos"
     puts "\t - #{@confidential} fueron confidenciales"
     puts "y OCC nos botó #{@resets} veces."
+  end
+
+  def print_separator
+    puts '-----------------------'
   end
 end
