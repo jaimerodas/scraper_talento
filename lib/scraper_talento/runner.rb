@@ -40,12 +40,25 @@ module ScraperTalento
       object
     end
 
+    def self.resume_resume_download
+      object = new
+      object.run_resume_download
+      object
+    end
+
     def run_full_process
       login
       start_search
       filter_results
       init_files
       scrape_urls
+      scrape_resumes
+    end
+
+    def run_resume_download
+      init_candidate_urls
+      init_results_file
+      login
       scrape_resumes
     end
 
@@ -115,6 +128,8 @@ module ScraperTalento
       File.open('urls.txt', 'w') {}
     end
 
+    def init_candidate_urls
+      @candidate_urls = File.open('urls.txt').map
     end
   end
 end
