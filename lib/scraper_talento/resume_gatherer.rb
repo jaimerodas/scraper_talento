@@ -24,10 +24,20 @@ module ResumeGatherer
     true
   end
 
-  def scrape_candidate_urls
+  def less_than_limit?
+    @candidate_urls.size < @config['search']['limit']
+  end
+
+  def save_urls_to_file
+    File.open('urls.txt', 'a') do |file|
+      @candidate_urls.each { |u| file.puts u }
+    end
+  end
+
+  def scrape_urls
     scrape_page_urls
     @candidate_urls = @candidate_urls.uniq
     puts "Llevamos #{@candidate_urls.size} urls"
-    scrape_candidate_urls if next_page?
+    scrape_urls if less_than_limit? && next_page?
   end
 end

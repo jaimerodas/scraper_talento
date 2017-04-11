@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module ScraperTalento
   # The main class. It goes to OCC, logs in, searches for candidates, obtains
   # info from each of the results, and stores them in a CSV file.
@@ -39,7 +40,8 @@ module ScraperTalento
       start_search
       filter_results
       init_file
-      gather_candidates_info
+      scrape_urls
+      scrape_resumes
     end
 
     private
@@ -74,8 +76,7 @@ module ScraperTalento
       sleep 10
     end
 
-    def gather_candidates_info
-      scrape_candidate_urls
+    def scrape_resumes
 
       puts "Recolecté #{@candidate_urls.count} candidatos"
       bar = ProgressBar.new(@candidate_urls.size)

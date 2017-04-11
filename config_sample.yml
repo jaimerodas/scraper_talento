@@ -10,6 +10,9 @@ search:
   # Este es el texto que va en "Qué tipo de talento buscas?"
   string: Alguien súper chido
 
+  # El límite de CVs que vamos a buscar
+  limit: 1000
+
   # Estos son los ids de los filtros del panel de lado izquierdo
   filters:
     - LOC-10
