@@ -8,6 +8,8 @@ module FileFunctions
     'Email',
     'Teléfonos',
     'Fecha de Nacimiento',
+    'Código Postal',
+    'Ciudad/Municipio',
     'Sueldo Mínimo',
     'Sueldo Deseado',
     'Nivel Académico'
