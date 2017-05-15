@@ -44,7 +44,7 @@ module CandidateProcessor
   def save_candidate_data
     CSV.open('resultados.csv', 'a') do |csv|
       csv << [
-        name, email, phones, birthday,
+        name, email, phones, birthday, zipcode, city,
         minimum_salary, desired_salary, academic_level
       ]
     end
@@ -121,5 +121,13 @@ module CandidateProcessor
 
   def academic_level
     prop '#cv_preparacionacademica_group .cv_academica .contentTituloSeccion'
+  end
+
+  def zipcode
+    @browser.all('#datosPersonales .contentRightFieldPersonal')[1]&.text
+  end
+
+  def city
+    prop('#datosPersonales .topContentRightFieldPersonal')
   end
 end
