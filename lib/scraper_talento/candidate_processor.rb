@@ -24,6 +24,7 @@ module CandidateProcessor
   def gather_candidate_data
     if old_candidate?
       @old += 1
+      return
     elsif not_confidential?
       show_candidate_details
     else
@@ -57,8 +58,20 @@ module CandidateProcessor
 
   def show_candidate_details
     @browser.find('#datosPersonales .rowDataHeader:nth-child(2) a').click
-    sleep 5
+    wait_until_ready
     @new += 1
+  end
+
+  def wait_until_ready
+    tries = 0
+    while name == 'Show Identity' && tries < 5
+      sleep 5
+      tries += 1
+    end
+    return unless tries == 5
+
+    @browser.find('#datosPersonales .rowDataHeader:nth-child(2) a').click
+    sleep 5
   end
 
   def old_candidate?
