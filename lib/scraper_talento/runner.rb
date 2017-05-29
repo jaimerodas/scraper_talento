@@ -36,6 +36,10 @@ module ScraperTalento
       object
     end
 
+    def self.post
+      ScraperTalento::Candidate.all.post
+    end
+
     def run_full_process
       login
       start_search
@@ -49,6 +53,12 @@ module ScraperTalento
       init_results_file
       login
       scrape_resumes
+    end
+
+    def import
+      gather_results
+      process_candidates
+      import_into_recruiterbox
     end
 
     private

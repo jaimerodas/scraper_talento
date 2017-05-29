@@ -5,6 +5,7 @@ require 'capybara/poltergeist'
 require 'csv'
 require 'yaml'
 require 'progress_bar'
+require 'active_support/inflector'
 
 require_relative 'scraper_talento/functions'
 require_relative 'scraper_talento/file_functions'
