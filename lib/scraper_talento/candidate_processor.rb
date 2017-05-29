@@ -9,8 +9,8 @@ module CandidateProcessor
 
   def explore_candidate(candidate_url)
     return unless candidate_url.match?(URI.regexp)
-
     @browser.visit candidate_url
+    @url = candidate_url
 
     begin
       gather_candidate_data
@@ -24,8 +24,9 @@ module CandidateProcessor
   def gather_candidate_data
     if old_candidate?
       @old += 1
-      return
+      @status = 'repetido'
     elsif not_confidential?
+      @status = 'nuevo'
       show_candidate_details
     else
       @confidential += 1
@@ -45,7 +46,7 @@ module CandidateProcessor
     CSV.open('resultados.csv', 'a') do |csv|
       csv << [
         name, email, phones, birthday, zipcode, city,
-        minimum_salary, desired_salary, academic_level
+        minimum_salary, desired_salary, academic_level, @status, @url
       ]
     end
   end

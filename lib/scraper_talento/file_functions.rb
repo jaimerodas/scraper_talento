@@ -12,7 +12,9 @@ module FileFunctions
     'Ciudad/Municipio',
     'Sueldo Mínimo',
     'Sueldo Deseado',
-    'Nivel Académico'
+    'Nivel Académico',
+    'Estatus',
+    'URL'
   ].freeze
 
   def init_files
