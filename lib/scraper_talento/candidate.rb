@@ -1,14 +1,13 @@
 module ScraperTalento
   require 'csv'
   require 'uri'
+  require 'yaml'
   require 'json'
   require 'net/http'
   require 'active_support/inflector'
 
   class Candidate
-    API_KEY = '7767f2fbc7bb46d2968be80f34ef8860'
-
-    def initialize(candidate_array)
+    def initialize(candidate_array, config)
       first_name, last_name = guess_name(candidate_array[0].titleize)
       @body = {
         first_name: first_name,
@@ -25,17 +24,21 @@ module ScraperTalento
           { name: 'Ciudad/Municipio', value: candidate_array[5] },
           { name: 'Fuente', value: candidate_array[10] }
         ],
-        opening_id: 189202,
-        stage_id: 1850166
+        opening_id: config['opening_id'],
+        stage_id: config['stage_id']
       }
     end
 
     def self.all
       candidates = []
+      config = YAML.load_file(
+        File.dirname(__FILE__) + '/../../config.yml'
+      )['recruiterbox']
 
       CSV.foreach('resultados.csv') do |row|
         next if row[0] == 'Show Identity'
-        candidates << new(row)
+        next if not_in_valid_cps(row[4], config['cps'])
+        candidates << new(row, config)
       end
 
       candidates
@@ -45,6 +48,13 @@ module ScraperTalento
       all.each(&:post)
     end
 
+    def self.not_in_valid_cps(cp, cps)
+      return false if cps&.size&.positive?
+      return false if cps.include? cp.to_i
+      puts "No está en la lista de cps"
+      true
+    end
+
     def post
       uri = URI.parse 'https://api.recruiterbox.com/v2/candidates'
       http = Net::HTTP.new(uri.host, uri.port)
@@ -52,7 +62,7 @@ module ScraperTalento
       request = Net::HTTP::Post.new uri.request_uri,
                                     'Content-Type' => 'application/json'
       request.body = @body.to_json
-      request.basic_auth API_KEY, ''
+      request.basic_auth '7767f2fbc7bb46d2968be80f34ef8860', ''
 
       puts "#{@body[:first_name]} #{@body[:last_name]}"
       http.request(request)
