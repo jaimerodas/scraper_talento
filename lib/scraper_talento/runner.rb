@@ -16,8 +16,10 @@ module ScraperTalento
 
     def initialize
       Capybara.register_driver :poltergeist do |app|
-        Capybara::Poltergeist::Driver.new(app, js_errors: false)
+        Capybara::Poltergeist::Driver.new(app, js_errors: false, timeout: 500)
       end
+
+      Capybara.default_max_wait_time = 30
       @config = YAML.load_file(File.dirname(__FILE__) + '/../../config.yml')
       @browser = Capybara::Session.new(:poltergeist)
       @candidate_urls = @candidates = []
@@ -47,6 +49,8 @@ module ScraperTalento
       init_files
       scrape_urls
       scrape_resumes
+    rescue
+      @browser.save_screenshot
     end
 
     def run_resume_download
@@ -111,6 +115,8 @@ module ScraperTalento
         bar.increment!
       end
 
+      print_search_results
+    rescue
       print_search_results
     end
   end
