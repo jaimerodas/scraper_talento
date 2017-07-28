@@ -13,15 +13,7 @@ module ResumeGatherer
 
   def next_page?
     link = @browser.all('#paginator .ts_li_siguiente a:not(.unavailable)')
-
-    return false if link.empty?
-
-    capture_stdout do
-      link.first.click
-      sleep 8
-    end
-
-    true
+    link.empty? ? false : true
   end
 
   def less_than_limit?
@@ -34,10 +26,21 @@ module ResumeGatherer
     end
   end
 
-  def iterate_over_paged_results
+  def iterate_over_paged_results(page = 1)
     scrape_page_urls
     @candidate_urls = @candidate_urls.uniq
-    puts "Llevamos #{@candidate_urls.size} urls"
-    iterate_over_paged_results if less_than_limit? && next_page?
+
+    puts "Estoy en la página #{page}"
+    puts "Llevo #{@candidate_urls.size} urls"
+
+    return unless less_than_limit? && next_page?
+
+    capture_stdout do
+      @browser.execute_script("SetCookie('page', #{page + 1})")
+      @browser.execute_script('ReSearch()')
+      sleep 8
+    end
+
+    iterate_over_paged_results(page + 1)
   end
 end
