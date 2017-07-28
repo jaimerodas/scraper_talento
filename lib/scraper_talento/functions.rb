@@ -37,7 +37,7 @@ module HelperFunctions
     puts "De #{@candidate_urls.size} candidatos:"
     puts "\t - #{@old} fueron viejos"
     puts "\t - #{@new} fueron nuevos"
-    puts "\t - #{@confidential} fueron confidenciales"
+    puts "\t - #{@confidential} fueron confidenciales ó inactivos"
     puts "y OCC nos botó #{@resets} veces."
   end
 

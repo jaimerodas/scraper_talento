@@ -22,15 +22,15 @@ module CandidateProcessor
   end
 
   def gather_candidate_data
-    if old_candidate?
-      @old += 1
-      @status = 'repetido'
-    elsif not_confidential?
-      @status = 'nuevo'
-      show_candidate_details
-    else
+    if inactive? || confidential?
       @confidential += 1
       return
+    elsif old_candidate?
+      @old += 1
+      @status = 'repetido'
+    else
+      @status = 'nuevo'
+      show_candidate_details
     end
 
     save_candidate_data
@@ -79,8 +79,14 @@ module CandidateProcessor
     @browser.find(NAME_SELECTOR).text.match?(CV_REGEX)
   end
 
-  def not_confidential?
-    !@browser.all('#datosPersonales .rowDataHeader:nth-child(2) a').empty?
+  def inactive?
+    !@browser.all(
+      '.ts_mensaje_error_sistema_contenedor_vacante_plantilla'
+    ).empty?
+  end
+
+  def confidential?
+    @browser.all('#datosPersonales .rowDataHeader:nth-child(2) a').empty?
   end
 
   def prop(selector)
