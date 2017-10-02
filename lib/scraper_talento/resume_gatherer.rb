@@ -21,7 +21,7 @@ module ResumeGatherer
   end
 
   def save_urls_to_file
-    File.open('urls.txt', 'a') do |file|
+    File.open("urls/#{@fname}", 'a') do |file|
       @candidate_urls.each { |u| file.puts u }
     end
   end

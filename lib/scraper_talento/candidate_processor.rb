@@ -46,7 +46,7 @@ module CandidateProcessor
   end
 
   def save_candidate_data
-    CSV.open('resultados.csv', 'a') do |csv|
+    CSV.open("resultados/#{@fname}.csv", 'a') do |csv|
       csv << [
         name, email, phones, birthday, zipcode, city,
         minimum_salary, desired_salary, academic_level, @status, @url

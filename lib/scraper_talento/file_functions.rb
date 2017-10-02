@@ -24,13 +24,13 @@ module FileFunctions
 
   def init_results_file
     print_separator
-    puts 'Creamos archivo de URLs'
-    CSV.open('resultados.csv', 'w') { |csv| csv << RESULTS_COLUMNS }
+    puts 'Creamos archivo de Resultados'
+    CSV.open("resultados/#{@fname}.csv", 'w') { |csv| csv << RESULTS_COLUMNS }
   end
 
   def init_urls_file
     print_separator
-    puts 'Creamos archivo de Resultados'
-    File.open('urls.txt', 'w') {}
+    puts 'Creamos archivo de URLs'
+    File.open("urls/#{@fname}", 'w') {}
   end
 end

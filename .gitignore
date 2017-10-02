@@ -6,5 +6,5 @@ vendor
 config.yml
 
 # Resultados
-resultados.csv
-urls.txt
+resultados/*
+urls/*

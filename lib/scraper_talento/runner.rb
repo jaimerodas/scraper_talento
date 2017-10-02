@@ -21,6 +21,8 @@ module ScraperTalento
 
       Capybara.default_max_wait_time = 30
       @config = YAML.load_file(File.dirname(__FILE__) + '/../../config.yml')
+      @fname = "#{@config['search']['string']} - " \
+               "#{Time.now.strftime('%Y%m%d%H%M%S')}"
       @browser = Capybara::Session.new(:poltergeist)
       @candidate_urls = @candidates = []
       @old = @new = @confidential = @resets = @tries = 0
@@ -110,7 +112,7 @@ module ScraperTalento
     end
 
     def scrape_resumes
-      urls = File.readlines('urls.txt')
+      urls = File.readlines("urls/#{@fname}")
       print_separator
       puts "Voy a sacar info de #{urls.count} CVs"
       bar = ProgressBar.new(urls.size)
