@@ -93,8 +93,14 @@ module ScraperTalento
         apply_filter(filter)
       end
       print_separator
-      puts 'Aumentando resultados a 200 por hoja'
-      @browser.execute_script('ResultsByPage(200)')
+      increase_amount_of_results
+    end
+
+    def increase_amount_of_results
+      return unless @config['search']['limit'] > 20
+      number = [@config['search']['limit'], 200].min
+      puts "Aumentando resultados a #{number} por hoja"
+      @browser.execute_script("ResultsByPage(#{number})")
       sleep 10
     end
 
