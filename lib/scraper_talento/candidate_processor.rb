@@ -22,12 +22,15 @@ module CandidateProcessor
   end
 
   def gather_candidate_data
-    if inactive? || confidential?
+    if inactive?
       @confidential += 1
       return
     elsif old_candidate?
       @old += 1
       @status = 'repetido'
+    elsif confidential?
+      @confidential += 1
+      return
     else
       @status = 'nuevo'
       show_candidate_details
